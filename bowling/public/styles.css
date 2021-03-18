@@ -1,0 +1,75 @@
+.title {
+margin: auto;
+width: 900px;
+text-align: center;
+margin-top: 50px;
+margin-bottom: 50px;
+}
+
+.selection {
+  margin: auto;
+  width: 900px;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 50px;
+}
+
+.num {
+  width: 40px;
+  height: 40px;
+}
+
+.score {
+  margin: auto;
+  width: 902px;
+}
+
+.game {
+  border: solid 1px black;
+  display: flex;
+
+}
+.frame {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border: solid 1px black;
+  display: flex;
+  text-align: center;
+}
+.turn1 {
+  width: 20px;
+  height: 40px;
+  border: solid 1px black;
+  text-align: center;
+  line-height: 40px;
+  font-size: 20px;
+  margin-left: auto;
+}
+.turn2 {
+  width: 20px;
+  height: 40px;
+  border: solid 1px black;
+  text-align: center;
+  font-size: 20px;
+  line-height: 40px;
+}
+
+.points{
+  position: absolute;
+  top: 45px;
+  left: 10px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.finalScore {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border: solid 1px black;
+  text-align: center;
+  margin-left: auto;
+  font-size: 30px;
+  line-height: 80px;
+}

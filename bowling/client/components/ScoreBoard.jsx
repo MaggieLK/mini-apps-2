@@ -2,13 +2,13 @@ import React from 'react';
 import Frame from './Frame.jsx';
 import CurrentFrame from './CurrentFrame.jsx';
 
-const ScoreBoard = (props) => (
-  <div className="score">
-    {props.games.map(game => {
-      return <Frame key={game} game={game} />
+const ScoreBoard = (props) => {
+  return <div className="score">
+    <CurrentFrame ten={props.ten} game={props.currentGame}/>
+    {props.games.map((game, i) => {
+      return <Frame key={`frame${i}${game}`} game={game} />
     })}
-    <CurrentFrame game={props.currentGame}/>
   </div>
-)
+}
 
 export default ScoreBoard;
