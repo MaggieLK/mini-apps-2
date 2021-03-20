@@ -5,9 +5,11 @@ import {
   //decrementFlag,
   incrementFlags,
   incrementBlanks,
-  incrementChecked,
+  incrementExploded,
 } from '../features/mineFinder';
-//import $ from 'jquery';
+import explosion from '../explosion.png';
+import caution from '../caution.png';
+
 
 export function Column(props) {
   const state = store.getState();
@@ -15,36 +17,37 @@ export function Column(props) {
   const flags = useSelector(state => state.mineLocations.flags);
   const mines = useSelector(state => state.mineLocations.mines);
   const blanks = useSelector(state => state.mineLocations.blanks);
-  //const checked = useSelector(state => state.mineLocations.checked);
+  const exploded = useSelector(state => state.mineLocations.exploded);
 
   let rowArray = ["1", "2", "3", "4", "5", "6","7", "8", "9", "10"];
 
   let handleClick = function(e) {
     let Xnum = Number(e.target.dataset['x']);
     let Ynum = Number(e.target.dataset['y']);
-    //let adjacentMines = 0;
 
     let recurse = (x, y, checked) => {
       let recurseArr = [[x+1, y], [x-1, y], [x+1, y-1], [x+1, y+1], [x-1, y-1], [x-1, y+1], [x, y+1], [x, y-1]]
 
       if (x > 0 && x <=10 && y > 0 && y <=10){
-        console.log(x, y)
-        // let square = document.getElementById(`${x}, ${y}`);
         let adjacentMines = 0;
         mines.forEach(space => {
           if((space[0] == x + 1 || space[0] == x - 1 || space[0] == x) && (space[1] == y || space[1] == y + 1 || space[1] == y - 1)) {
             adjacentMines += 1;
           }
         });
-        // blanks.forEach(space => {
-        //   if(space[0] == x && space[1] == y) {
-        //     blankState = true;
-        //   }
-        // });
-        console.log(adjacentMines)
 
-        if(adjacentMines == 0) {
+        let flagged = false;
+        flags.forEach(space => {
+          if(space[0] == x && space[1] == y) {
+            flagged = true
+          }
+        });
+        if (flagged == false) {
           dispatch(incrementBlanks([x,y]))
+        }
+
+        if(adjacentMines == 0 && flagged == false) {
+
           recurseArr.forEach(pair => {
             let blankState = false;
             checked.forEach(space => {
@@ -52,9 +55,7 @@ export function Column(props) {
                 blankState = true;
               }
             });
-            console.log(blankState, pair)
             if(blankState == false){
-
               checked.push([pair[0], pair[1]])
               recurse(pair[0], pair[1], checked)
             }
@@ -63,65 +64,67 @@ export function Column(props) {
       }
     }
 
-
-    if (e.type === 'click') {
-      let exploded = false;
-      mines.forEach(space => {
-        if(space[0] == Xnum && space[1] == Ynum) {
-          e.target.classList.add('mine');
-          e.target.classList.remove('space');
-          exploded = true
+    if (exploded.length == 0) {
+      if (e.type === 'click') {
+        let boom = false;
+        mines.forEach(space => {
+          if(space[0] == Xnum && space[1] == Ynum) {
+            e.target.classList.add('mine');
+            e.target.classList.remove('space');
+            boom = true;
+            dispatch(incrementExploded([Xnum,Ynum]))
+          }
+        })
+        if (boom == false) {
+          dispatch(incrementBlanks([Xnum,Ynum]))
+          recurse(Xnum, Ynum, [])
         }
-      })
-      if (exploded == false) {
-        recurse(Xnum, Ynum, [])
+      } else if (e.type === 'contextmenu') {
+        e.preventDefault();
+        dispatch(incrementFlags([Xnum,Ynum]))
       }
-    } else if (e.type === 'contextmenu') {
-      e.preventDefault();
-      //e.target.classList.add('flag');
-      //e.target.classList.remove('space');
-      dispatch(incrementFlags([Xnum,Ynum]))
+      if(document.getElementsByClassName("space").length == 0) {
+        console.log('You win!')
+      }
     }
-
-    if(document.getElementsByClassName("space").length == 0) {
-      console.log('game over')
-    }
-
-
   }
-
-
-
-
-
 
   return (
     <div className={`column`}>
     {rowArray.map(y => {
+      let adjacentMines = 0;
+      let xNum = Number(props.x);
+      let yNum = Number(y)
       let condition = 'space';
-      //console.log(flags)
+      let output = null;
+
+      mines.forEach(space => {
+        if((space[0] == xNum + 1 || space[0] == xNum - 1 || space[0] == xNum) && (space[1] == yNum || space[1] == yNum + 1 || space[1] == yNum - 1)) {
+          adjacentMines += 1;
+        }
+      });
+
       flags.forEach(space => {
-        if(space[0] == props.x && space[1] == y) {
+        if(space[0] == xNum && space[1] == yNum) {
           condition = 'flag';
+          output = <img className='explosion' src={caution} />
         }
       });
       blanks.forEach(space => {
-        if(space[0] == props.x && space[1] == y) {
+        if(space[0] == xNum && space[1] == yNum) {
           condition = 'blank';
+          output = adjacentMines;
         }
       });
-      let adjacentMines = null;
-      if(condition == "blank") {
-        adjacentMines = 0;
-        mines.forEach(space => {
-          if((space[0] == props.x + 1 || space[0] == props.x - 1 || space[0] == props.x) && (space[1] == y || space[1] == y + 1 || space[1] == y - 1)) {
-            //console.log(props.x,y)
-            adjacentMines += 1;
-          }
-        })
+
+
+      if(exploded[0] == xNum && exploded[1] == yNum) {
+        condition = 'mine';
+        output = <img className='explosion' src={explosion} />
       }
 
-      return <div key={`key${props.x}${y}`} id={`${props.x},${y}`} data-x={props.x} data-y={y} className={`${y} ${condition}`} onClick={handleClick} onContextMenu={handleClick} >{adjacentMines}</div>
+
+      return <div key={`key${props.x}${y}`} id={`${props.x},${y}`} data-x={props.x} data-y={y} className={`${y} ${condition}`} onClick={handleClick} onContextMenu={handleClick} >{output}</div>
     }).reverse()}
     <div className="score"></div>
   </div>

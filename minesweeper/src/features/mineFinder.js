@@ -34,6 +34,7 @@ export const mineLocations = createSlice({
     mines: mines,
     flags: [],
     blanks: [],
+    exploded: [],
   },
   reducers: {
     // increment: state => {
@@ -44,6 +45,9 @@ export const mineLocations = createSlice({
     //   //state.value += 1;
 
     // },
+    incrementExploded: (state, action) => {
+      state.exploded = action.payload
+    },
     incrementBlanks: (state, action) => {
       const newState = [...state.blanks];
       newState.push(action.payload);
@@ -57,7 +61,7 @@ export const mineLocations = createSlice({
   }
 });
 
-export const { incrementFlags, incrementBlanks } = mineLocations.actions;
+export const { incrementFlags, incrementBlanks, incrementExploded } = mineLocations.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

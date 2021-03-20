@@ -5,6 +5,24 @@
 
 .space{
   border: 1px solid black;
+  height:8vh;
+  width:8vh;
+}
+
+.space {
+  box-shadow:inset 0px 1px 0px 0px #ffffff;
+  background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+  background-color:#ffffff;
+  height:8vh;
+  width:8vh;
+  border:1px solid black;
+  display:inline-block;
+  cursor:pointer;
+  /* padding:6px 24px; */
+}
+.space:hover {
+  background:linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+  background-color:#e9e9e9;
 }
 
 .mine {
@@ -12,9 +30,20 @@
 }
 
 .flag {
-  background: red !important;
+  background:linear-gradient(to bottom, #c62d1f 5%, #f24537  100%);
+  border:1px solid black;
 }
 
 .blank {
-  background: green;
+  background:linear-gradient(to bottom, #77a809 5%, #89c403 100%);
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  line-height: 8vh;
+  border:1px solid black;
+}
+
+.explosion {
+  margin-left: auto;
+  width: 7.7vh;
 }
