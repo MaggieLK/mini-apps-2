@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { mineReducer } from '../features/mineFinder';
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
+    mineLocations: mineReducer,
   },
 });

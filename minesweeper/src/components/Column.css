@@ -6,3 +6,15 @@
 .space{
   border: 1px solid black;
 }
+
+.mine {
+  background: black;
+}
+
+.flag {
+  background: red !important;
+}
+
+.blank {
+  background: green;
+}

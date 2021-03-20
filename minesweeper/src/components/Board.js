@@ -13,6 +13,8 @@ import './Board.css';
 // import styles from './Counter.module.css';
 
 export function Board() {
+
+
   //const count = useSelector(selectCount);
   const dispatch = useDispatch();
   //const [incrementAmount, setIncrementAmount] = useState('2');
@@ -21,18 +23,8 @@ export function Board() {
       <div>
         <div className="board">
           {columnArray.map(x => {
-            return <Column x={x}/>
+            return <Column key={x} x={x}/>
           })}
-          {/* <Column x="1" />
-          <Column x="2" />
-          <Column x="3" />
-          <Column x="4" />
-          <Column x="5" />
-          <Column x="6" />
-          <Column x="7" />
-          <Column x="8" />
-          <Column x="9" />
-          <Column x="10" /> */}
         </div>
       </div>
 
