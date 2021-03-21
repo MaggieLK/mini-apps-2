@@ -2,7 +2,7 @@ import './Column.css';
 import store from '../app/store.js';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  //decrementFlag,
+  decrementFlags,
   incrementFlags,
   incrementBlanks,
   incrementExploded,
@@ -24,6 +24,7 @@ export function Column(props) {
   let handleClick = function(e) {
     let Xnum = Number(e.target.dataset['x']);
     let Ynum = Number(e.target.dataset['y']);
+    var flagChange = false;
 
     let recurse = (x, y, checked) => {
       let recurseArr = [[x+1, y], [x-1, y], [x+1, y-1], [x+1, y+1], [x-1, y-1], [x-1, y+1], [x, y+1], [x, y-1]]
@@ -39,7 +40,11 @@ export function Column(props) {
         let flagged = false;
         flags.forEach(space => {
           if(space[0] == x && space[1] == y) {
-            flagged = true
+            flagged = true;
+            if (flagChange == true) {
+              flagChange = false;
+              flagged = false;
+            }
           }
         });
         if (flagged == false) {
@@ -47,7 +52,6 @@ export function Column(props) {
         }
 
         if(adjacentMines == 0 && flagged == false) {
-
           recurseArr.forEach(pair => {
             let blankState = false;
             checked.forEach(space => {
@@ -66,11 +70,16 @@ export function Column(props) {
 
     if (exploded.length == 0) {
       if (e.type === 'click') {
+        flags.forEach(space => {
+          if(space[0] == Xnum && space[1] == Ynum) {
+            dispatch(decrementFlags([Xnum,Ynum]));
+            flagChange = true;
+          }
+        });
+
         let boom = false;
         mines.forEach(space => {
           if(space[0] == Xnum && space[1] == Ynum) {
-            e.target.classList.add('mine');
-            e.target.classList.remove('space');
             boom = true;
             dispatch(incrementExploded([Xnum,Ynum]))
           }
@@ -83,7 +92,7 @@ export function Column(props) {
         e.preventDefault();
         dispatch(incrementFlags([Xnum,Ynum]))
       }
-      if(document.getElementsByClassName("space").length == 0) {
+      if(blanks.length == 90) {
         console.log('You win!')
       }
     }
@@ -107,13 +116,13 @@ export function Column(props) {
       flags.forEach(space => {
         if(space[0] == xNum && space[1] == yNum) {
           condition = 'flag';
-          output = <img className='explosion' src={caution} />
+          output = <img className='caution' src={caution} data-x={props.x} data-y={y}/>
         }
       });
       blanks.forEach(space => {
         if(space[0] == xNum && space[1] == yNum) {
           condition = 'blank';
-          output = adjacentMines;
+          if (adjacentMines > 0) output = adjacentMines;
         }
       });
 

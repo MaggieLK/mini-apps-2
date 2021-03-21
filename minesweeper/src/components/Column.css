@@ -25,13 +25,18 @@
   background-color:#e9e9e9;
 }
 
-.mine {
-  background: black;
-}
+
 
 .flag {
   background:linear-gradient(to bottom, #c62d1f 5%, #f24537  100%);
   border:1px solid black;
+  height:8vh;
+  width:8vh;
+}
+
+.caution {
+  margin-top: 1vh;
+  width: 7vh;
 }
 
 .blank {
@@ -39,11 +44,20 @@
   text-align: center;
   font-weight: bold;
   color: #fff;
+  font-size: 4vh;
   line-height: 8vh;
   border:1px solid black;
 }
 
+.mine {
+  background: black;
+  /* height:8vh;
+  width:8vh; */
+}
+
 .explosion {
   margin-left: auto;
-  width: 7.7vh;
+  height: 7.8vh;
+  margin: auto;
 }
+
