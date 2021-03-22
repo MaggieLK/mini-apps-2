@@ -1,8 +1,7 @@
 .board {
   margin: auto;
-  /* height: 80vh;
-  width: 80vh; */
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  /* border: 1px solid black; */
+  height: 75vh;
+  width: 75vh;
+  display: flex;
+  flex-direction: row;
 }

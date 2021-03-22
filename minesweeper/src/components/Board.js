@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import store from '../app/store.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { Column } from './Column'
 import './Board.css';
 
 export function Board() {
-  const dispatch = useDispatch();
-  let columnArray = ["1", "2", "3", "4", "5", "6","7", "8", "9", "10"];
+  const state = store.getState();
+  const diff = useSelector(state => state.mineLocations.diff);
+
   return (
       <div>
         <div className="board">
-          {columnArray.map(x => {
+          {diff.map(x => {
             return <Column key={x} x={x}/>
           })}
         </div>

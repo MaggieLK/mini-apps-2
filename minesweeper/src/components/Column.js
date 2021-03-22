@@ -6,10 +6,9 @@ import {
   incrementFlags,
   incrementBlanks,
   incrementExploded,
-} from '../features/mineFinder';
+} from '../features/sliceCreator';
 import explosion from '../explosion.png';
 import caution from '../caution.png';
-
 
 export function Column(props) {
   const state = store.getState();
@@ -18,18 +17,18 @@ export function Column(props) {
   const mines = useSelector(state => state.mineLocations.mines);
   const blanks = useSelector(state => state.mineLocations.blanks);
   const exploded = useSelector(state => state.mineLocations.exploded);
-
-  let rowArray = ["1", "2", "3", "4", "5", "6","7", "8", "9", "10"];
+  const diff = useSelector(state => state.mineLocations.diff);
 
   let handleClick = function(e) {
     let Xnum = Number(e.target.dataset['x']);
     let Ynum = Number(e.target.dataset['y']);
     var flagChange = false;
+    let length = diff.length;
 
     let recurse = (x, y, checked) => {
       let recurseArr = [[x+1, y], [x-1, y], [x+1, y-1], [x+1, y+1], [x-1, y-1], [x-1, y+1], [x, y+1], [x, y-1]]
 
-      if (x > 0 && x <=10 && y > 0 && y <=10){
+      if (x > 0 && x <= diff.length && y > 0 && y <= diff.length){
         let adjacentMines = 0;
         mines.forEach(space => {
           if((space[0] == x + 1 || space[0] == x - 1 || space[0] == x) && (space[1] == y || space[1] == y + 1 || space[1] == y - 1)) {
@@ -100,7 +99,7 @@ export function Column(props) {
 
   return (
     <div className={`column`}>
-    {rowArray.map(y => {
+    {diff.map(y => {
       let adjacentMines = 0;
       let xNum = Number(props.x);
       let yNum = Number(y)
@@ -122,21 +121,18 @@ export function Column(props) {
       blanks.forEach(space => {
         if(space[0] == xNum && space[1] == yNum) {
           condition = 'blank';
-          if (adjacentMines > 0) output = adjacentMines;
+          if (adjacentMines > 0) output = <div className='mineNumber'>{adjacentMines}</div>;
         }
       });
-
 
       if(exploded[0] == xNum && exploded[1] == yNum) {
         condition = 'mine';
         output = <img className='explosion' src={explosion} />
       }
 
-
       return <div key={`key${props.x}${y}`} id={`${props.x},${y}`} data-x={props.x} data-y={y} className={`${y} ${condition}`} onClick={handleClick} onContextMenu={handleClick} >{output}</div>
     }).reverse()}
     <div className="score"></div>
   </div>
   )
-
 }

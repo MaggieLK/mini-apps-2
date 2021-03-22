@@ -11,7 +11,7 @@ while(mines.length < 10) {
   let mine = [getRandomInt(1, 11), getRandomInt(1, 11)];
   let repeat = false;
   mines.forEach(space => {
-    if(space[0] == mine[0] && space[1] !== mine[1]){
+    if(space[0] == mine[0] && space[1] == mine[1]){
       repeat = true;
     }
   })
@@ -25,6 +25,7 @@ export const mineLocations = createSlice({
     flags: [],
     blanks: [],
     exploded: [],
+    diff: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   },
   reducers: {
     incrementExploded: (state, action) => {
@@ -42,6 +43,9 @@ export const mineLocations = createSlice({
         newState.push(action.payload);
       }
       state.blanks = newState;
+    },
+    setBlanks: (state, action) => {
+      state.blanks = action.payload;
     },
     incrementFlags: (state, action) => {
       const newState = [...state.flags];
@@ -67,10 +71,19 @@ export const mineLocations = createSlice({
       newState = newState.slice(0, index).concat(newState.slice(index+1));
       state.flags = newState;
     },
+    setFlags: (state, action) => {
+      state.flags = action.payload;
+    },
+    setMines: (state, action) => {
+      state.mines = action.payload;
+    },
+    setDiff: (state, action) => {
+      state.diff = action.payload;
+    },
   }
 });
 
-export const { incrementFlags, decrementFlags, incrementBlanks, incrementExploded } = mineLocations.actions;
+export const { incrementFlags, decrementFlags, incrementBlanks, incrementExploded, setMines, setDiff, setBlanks, setFlags } = mineLocations.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

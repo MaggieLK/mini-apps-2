@@ -1,0 +1,15 @@
+.options {
+  position: relative;
+  left: 33%;
+  width: 150px;
+  margin: auto;
+}
+
+.newGame {
+  font-size: 20px;
+}
+
+.level {
+  margin: 10px auto;
+  display: block;
+}

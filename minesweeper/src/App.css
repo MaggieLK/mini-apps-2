@@ -4,16 +4,13 @@
 }
 .App-header {
   margin: auto;
-  height: 5vh;
-  margin-bottom: 2vh;
+  height: 50px;
+  font-size: 1rem;
+  margin-bottom: 4vh;
   text-align: center;
 }
 
-.board {
-  margin: auto;
-  height: 80vh;
-  width: 80vh;
+.main {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  /* border: 1px solid black; */
+  grid-template-columns: 1fr 6fr;
 }
